@@ -60,35 +60,6 @@ def load_data():
     # Return the cleaned data
     return listings, neighbourhoods, reviews, restaurants
 
-#Function for sidebar
-def create_sidebar_with_icons():
-    # Define options with their corresponding icons
-    menu_items = {
-        "Dashboard": "📊",
-        "Analytics": "📈",
-        "Settings": "⚙️",
-        "Profile": "👤",
-        "Help": "❓"
-    }
-
-    with st.sidebar:
-        # Create the radio-like selection using option_menu
-        selected = option_menu(
-            menu_title="Main Menu",
-            options=list(menu_items.keys()),
-            icons=[menu_items[k] for k in menu_items.keys()],
-            menu_icon="cast",
-            default_index=0,
-            styles={
-                "container": {"padding": "5px"},
-                "icon": {"color": "orange", "font-size": "25px"},
-                "nav-link": {"font-size": "16px", "text-align": "left", "margin": "0px"},
-                "nav-link-selected": {"background-color": "#02ab21"},
-            }
-        )
-
-        return selected
-
 # Home Page
 def main_page():
     st.title("Welcome to Boston Airbnb Finder!")
@@ -116,7 +87,7 @@ def top_rated_airbnbs_page(listings, neighbourhoods):
     min_rating = st.slider("Minimum Rating (1-5)", min_value=1.0, max_value=5.0, step=0.1, value=4.5)
     # Add a multiselect for filtering by neighborhoods
     selected_neighborhoods = st.multiselect(
-        "Select Neighborhoods", neighbourhoods['neighbourhood'].unique()
+        "Select Neighborhood(s) around Boston", neighbourhoods['neighbourhood'].unique()
     )
 
     # Error-handling when rating column doesn't show up
@@ -171,7 +142,7 @@ def price_distribution_page(listings, neighbourhoods):
 
     # Adds dropdown menu
     neighborhood = st.selectbox(
-        "Select a Neighborhood",
+        "Select Neighborhood(s) around Boston",
         ['All'] + list(neighbourhoods['neighbourhood'].unique())
     )
     # Adds slider
@@ -213,7 +184,7 @@ def price_distribution_page(listings, neighbourhoods):
 
     # Display pivot table in Streamlit
     st.write("### Average Price by Neighborhood:")
-    st.dataframe(price_pivot,height=600, width=800) # Show pivot table
+    st.dataframe(price_pivot,height=300, width=600) # Show pivot table
 
     # Create bar chart for the price distribution
     st.write(f"### Price Distribution for {'All Neighborhoods' if neighborhood == 'All' else neighborhood}")
@@ -238,7 +209,7 @@ def most_affordable_airbnbs_page(listings):
 
     # Dropdown menu
     selected_neighborhood = st.selectbox(
-        "Select a Neighborhood", #Label
+        "Select a neighborhood that has the best price distribution for you, and look for the cheapest Airbnb in that area! Dont be scared to try new neighborhoods and explore places you haven't been yet!", #Label
         ['All'] + list(listings['neighbourhood'].unique()) # Including ALL and unique neighborhood names
     )
     #Filter listings for affordable options (price < 200)
@@ -283,8 +254,9 @@ def most_affordable_airbnbs_page(listings):
 def restaurant_page(restaurants):
     #title
     st.title("Boston Restaurants")
-    st.write("Explore the best restaurants in Boston!")
+    st.write("Now that you found a place to stay, you must explore the neighborhood! What better way than discovering the  best restaurants in Boston!")
 
+    st.write("Browse through the 50 most popular restaurants around Boston, or scroll down for a personalized experience. All you have to do is enter your location and the type of cuisine you want, and Boston Airbnb Finder will do the rest!")
     # Show restaurant catalogue
     st.dataframe(restaurants)
 
@@ -302,14 +274,14 @@ def restaurant_page(restaurants):
         filtered_data = filtered_data[filtered_data["Cuisine"] == cuisine]
 
     # Display filtered restaurants as a table
-    st.write("### Filtered Restaurants:")
+    st.write("### Available Restaurants:")
     st.dataframe(filtered_data)
 
 # Main
 def main():
     st.markdown("""<style>.stApp {background-color: #9e99e8;}</style>""", unsafe_allow_html=True)
 
-    st.sidebar.title("Navigation")
+    st.sidebar.title("Your perfect Airbnb awaits...")
     page = st.sidebar.selectbox(
         "Choose a Page",
         options=["Home", "Top-Rated Airbnbs", "Price Distribution", "Most Affordable Airbnbs", "Boston Restaurants"],
