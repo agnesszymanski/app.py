@@ -256,7 +256,7 @@ def restaurant_page(restaurants):
     st.title("Boston Restaurants")
     st.write("Now that you found a place to stay, you must explore the neighborhood! What better way than discovering the  best restaurants in Boston!")
 
-    st.write("Browse through the 50 most popular restaurants around Boston, or scroll down for a personalized experience. All you have to do is enter your location and the type of cuisine you want, and Boston Airbnb Finder will do the rest!")
+    st.write("Browse through the 50 most popular restaurants around Boston, OR scroll down for a personalized experience. All you have to do is enter your location and the type of cuisine you want, and Boston Airbnb Finder will do the rest!")
     # Show restaurant catalogue
     st.dataframe(restaurants)
 
